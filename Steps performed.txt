@@ -1,0 +1,71 @@
+Step 1: Data Loading & Cleaning
+
+Loaded sales_data_sample.csv into Power BI.
+
+Changed ORDERDATE to Date/Time format.
+
+Created a Date Table using DAX for time-based analysis:
+
+
+DateTable = ADDCOLUMNS (
+    CALENDAR (MIN(sales_data_sample[ORDERDATE]), MAX(sales_data_sample[ORDERDATE])),
+    "Year", YEAR([Date]),
+    "Month", FORMAT([Date], "MMM"),
+    "Quarter", "Q" & FORMAT([Date], "Q")
+)
+
+
+Step 2: DAX Measures Created
+
+A] Total Sales:
+
+Total Sales = SUM(sales_data_sample[SALES])
+
+
+B] Total Orders:
+
+Total Orders = DISTINCTCOUNT(sales_data_sample[ORDERNUMBER])
+
+
+C] Average Order Value:
+
+Avg Order Value = DIVIDE([Total Sales], [Total Orders])
+
+
+D] Sales YoY Growth:
+
+Sales YoY Growth =
+VAR PrevYearSales = CALCULATE([Total Sales], PREVIOUSYEAR(sales_data_sample[ORDERDATE]))  
+RETURN IF(ISBLANK(PrevYearSales), BLANK(), ([Total Sales] - PrevYearSales) / PrevYearSales)
+
+
+Step 3: Dashboard Visualizations
+
+A] KPI Cards: 
+	Total Sales, Total Orders, Average Order Value
+
+B] Line Chart:
+	Sales Trend Over Time 
+
+C] Bar Chart:
+	Sales by Deal Size 
+
+D] Matrix Table:
+	Yearly Sales Growth 
+
+E] Pie Chart:
+	Product Sales Breakdown 
+
+F] Slicers: 
+	Country, Date Range
+
+
+
+
+
+
+
+
+
+
+
